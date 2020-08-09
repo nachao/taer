@@ -1,9 +1,9 @@
 # Taer
-![](https://img.shields.io/badge/build-passing-brightgreen) ![](https://img.shields.io/bundlephobia/min/taer) ![](https://img.shields.io/github/license/nachao/taer)![GitHub release (latest by date)](https://img.shields.io/github/v/release/nachao/taer?style=plastic)![GitHub stars](https://img.shields.io/github/stars/nachao/taer?style=social)
+![](https://img.shields.io/badge/build-passing-brightgreen) ![](https://img.shields.io/bundlephobia/min/taer) ![](https://img.shields.io/github/license/nachao/taer)
 
 前端元数据开发工具，用于管理元数据，然后在组件中使用。
 
-![logoko](./logo.png)
+![logo.png](https://i.loli.net/2020/08/09/isLaPqfm3cDJXN7.png)
 
 **说明**
 此工具不局限于前端框架、UI库等，因为这只是一种开发方式。在定义数据结构上，请遵循提供的规则外，其他描述完全按需加入即可。
