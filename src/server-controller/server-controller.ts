@@ -1,5 +1,3 @@
-// @ts-ignore
-// import axios from 'axios';
 import { Events } from '../tools/events';
 import { Middleware } from '../tools/middleware';
 import { ITaerServerMiddleware, ITaerServerCallback, IMiddlewareOption } from './declare';

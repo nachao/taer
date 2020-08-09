@@ -1,9 +1,9 @@
 # Taer
-![](https://img.shields.io/badge/download-1K-brightgreen.svg)
+![](https://img.shields.io/badge/build-passing-brightgreen) ![](https://img.shields.io/bundlephobia/min/taer) ![](https://img.shields.io/github/license/nachao/taer)![GitHub release (latest by date)](https://img.shields.io/github/v/release/nachao/taer?style=plastic)![GitHub stars](https://img.shields.io/github/stars/nachao/taer?style=social)
 
+前端元数据开发工具，用于管理元数据，然后在组件中使用。
 
-基于 元数据（metadata） 的前端开发工具，此工具只考虑 元数据 的管理，然后在你编写的 组件 中引入使用。
-
+![logoko](./logo.png)
 
 **说明**
 此工具不局限于前端框架、UI库等，因为这只是一种开发方式。在定义数据结构上，请遵循提供的规则外，其他描述完全按需加入即可。
@@ -12,8 +12,12 @@
 元数据的单元为实体，一个实体数据的结构：
 
 - 实体描述
+
 - 异步操作定义
+
 - 字段描述定义
+
+  
 
 
 元数据用于描述任意一个实体数据（entity），例如一个最简单的 表单 实体数据：
@@ -33,7 +37,10 @@
 **目前提供的工具有：**
 
 - TaerField 字段操作
+
 - TaerServer 异步操作
+
+  
 
 ## TaerField
 将 entity.fields 转换为对象管理，以满足开发中的需求。例如：
@@ -214,7 +221,7 @@ const serverController = new TaerServer(entity.url)
 
 ### useRequest(option: IServerRequestMiddlewareOption): Promise<T>
 
-定义请求方式，默认为 axios。
+定义请求方式，不设置的话则不会进行网络请求。
 
 
 
