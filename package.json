@@ -1,0 +1,14 @@
+{
+    "name": "taer",
+    "version": "1.0.3",
+    "main": "lib/index.js",
+    "types": "src/index.ts",
+    "dependencies": {
+        "@types/axios": "^0.14.0",
+        "@types/lodash": "^4.14.159",
+        "@types/mockjs": "^1.0.2",
+        "axios": "^0.19.2",
+        "lodash": "^4.17.19",
+        "mockjs": "^1.1.0"
+    }
+}

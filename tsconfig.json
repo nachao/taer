@@ -1,0 +1,10 @@
+{
+    "include": [
+        "src/**/*"
+    ],
+    "compilerOptions": {
+        "outDir": "lib",
+        "target": "ESNext",
+        "allowSyntheticDefaultImports": true
+    }
+}
