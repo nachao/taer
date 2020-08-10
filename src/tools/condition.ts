@@ -1,4 +1,3 @@
-import { get } from 'lodash';
 import { FieldType } from '../consts';
 import { IFieldTypes } from '../declare';
 
@@ -46,7 +45,7 @@ export class Conditions {
     // 没有则默认为展示
     private parseCondition(data: any, condition: ICondition, types: IFieldTypes) {
         const type = types[condition.key];
-        const received = get(data, condition.key);
+        const received = data[condition.key];
         const expected = condition.value;
 
         switch(condition.mode) {

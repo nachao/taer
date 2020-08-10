@@ -1,10 +1,8 @@
 {
     "name": "taer",
     "version": "1.0.3",
+    "license": "MIT",
     "main": "lib/index.js",
     "types": "src/index.ts",
-    "publishConfig": { "registry": "https://npm.pkg.github.com/" },
-    "dependencies": {
-        "@types/lodash": "^4.14.159"
-    }
+    "keywords": ["frondend", "metadata", "model"]
 }

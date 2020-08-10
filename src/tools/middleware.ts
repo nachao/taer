@@ -1,6 +1,5 @@
-
-import { isArray, isFunction } from 'lodash'
 import { IAnyObject, IFunc } from '../declare';
+import { isFunction, isArray } from './utils';
 
 export interface IMiddlewareFnProps extends IAnyObject {
     value?: any,

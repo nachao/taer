@@ -5,7 +5,7 @@
 
 ![logo.png](https://i.loli.net/2020/08/09/isLaPqfm3cDJXN7.png)
 
-**说明**
+**背景说明**
 此工具不局限于前端框架、UI库等，因为这只是一种开发方式。在定义数据结构上，请遵循提供的规则外，其他描述完全按需加入即可。
 
 
@@ -21,9 +21,10 @@
 
 
 元数据用于描述任意一个实体数据（entity），例如一个最简单的 表单 实体数据：
-```json
-{
-    get: "/a",
+```ts
+const entity = {
+    name: "user",
+    get: "/user/create",
     fields: [
         { name: "name", label: "姓名" },
         { name: "age", label: "年龄" },

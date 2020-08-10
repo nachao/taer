@@ -1,4 +1,3 @@
-import { isFunction } from 'lodash'
 import { IAnyObject } from '../declare';
 
 export type ICallback = (...data: any[]) => void;
@@ -19,7 +18,7 @@ export class Events<T> {
     private _logs: Map<T, any[]> = new Map;
 
     public on(key: T, callback: ICallback, immediately = true) {
-        if (isFunction(callback)) {
+        if (typeof callback === 'function') {
             const events = this._events.get(key) || [];
             events.push(callback);
             this._events.set(key, events);

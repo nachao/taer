@@ -1,6 +1,5 @@
-import { cloneDeep, isFunction, has, isPlainObject } from 'lodash';
 import { FieldType } from '../consts';
-import { parseValueOfType } from '../tools/utils';123123
+import { parseValueOfType, cloneDeep, isFunction, has, isObjectLike } from '../tools/utils';
 import { Events } from '../tools/events';
 import { Conditions, ICondition } from '../tools/condition';
 import { Middleware } from '../tools/middleware';
@@ -309,7 +308,7 @@ export class TaerField<T = any> {
     private runParam() {
         const value = { [this.key]: this.value }
         const newParam = this._middleware.run<IParamFieldMOption>(FieldMiddleware.useParam, { value, field: this });
-        if (isPlainObject(newParam)) {
+        if (isObjectLike(newParam)) {
             return newParam;
         } else if (newParam !== undefined) {
             return { [this.key]: newParam };
