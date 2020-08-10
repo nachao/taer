@@ -1,6 +1,6 @@
 {
     "name": "taer",
-    "version": "1.0.3",
+    "version": "1.0.6",
     "license": "MIT",
     "main": "lib/index.js",
     "types": "src/index.ts",
