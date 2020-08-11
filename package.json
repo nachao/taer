@@ -1,6 +1,6 @@
 {
     "name": "taer",
-    "version": "1.0.6",
+    "version": "1.0.9",
     "license": "MIT",
     "main": "lib/index.js",
     "keywords": ["frondend", "metadata", "model"]
