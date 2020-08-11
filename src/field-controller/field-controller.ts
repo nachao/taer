@@ -117,7 +117,7 @@ export class TaerField<T = any> {
     // 状态
     private _store = new Map;
     private _disabled: boolean;
-    private _show: boolean;
+    private _show: boolean = true;
     private _val: any;
 
     // 基础数据
@@ -247,7 +247,7 @@ export class TaerField<T = any> {
 
     // 设置 依赖字段
     public setDepends(fields: TaerField[]) {
-        fields && fields.forEach(field => {
+        fields?.forEach(field => {
             if (field instanceof TaerField) {
                 field.on({ onChange: () => {
                     this.runDepends(field);
@@ -261,19 +261,16 @@ export class TaerField<T = any> {
     // 设置 字段主键
     public setKeyName(key: string) {
         this._keyName = key;
-        // this._keyName = this._middleware.run(FieldMiddleware.useKeyName, { value: this._keyName, field: this });
     }
 
     // 设置 字段类型 
     public setType(type: FieldType) {
         this._type = type;
-        // this._type = this._middleware.run(FieldMiddleware.useType, { value: FieldType.String, field: this });
     }
 
     // 设置 字段名词
     public setLabel(label: string) {
         this._label = label;
-        // this._label = this._middleware.run(FieldMiddleware.useLabel, { value: this.key, field: this });
     }
 
     // ====
@@ -283,8 +280,8 @@ export class TaerField<T = any> {
         const typeValue = parseValueOfType(value, this.type)
         this._val = this._middleware.run(FieldMiddleware.useChange, { value: typeValue, field: this });
         this._event.dispatch(FieldEvents.onChange, { field: this, value: this._val });
-        this.runDisabled(this);
-        this.runShow(this);
+        this.runDisabled();
+        this.runShow();
     }
 
     // 调用 依赖 回调
@@ -293,14 +290,14 @@ export class TaerField<T = any> {
     }
 
     // 调用 禁用 中间件/回调
-    private runDisabled(depend: TaerField) {
+    private runDisabled(depend?: TaerField) {
         this._disabled = this._middleware.run(FieldMiddleware.useDisabled, { value: false, field: this, depend });
         this._event.dispatch(FieldEvents.onDisabled, { field: this });
     }
 
     // 调用 是否展示 中间件/回调
-    private runShow(depend: TaerField) {
-        this._disabled = this._middleware.run(FieldMiddleware.useShow, { value: false, field: this, depend });
+    private runShow(depend?: TaerField) {
+        this._show = this._middleware.run(FieldMiddleware.useShow, { value: false, field: this, depend });
         this._event.dispatch(FieldEvents.onShow, { field: this });
     }
 
