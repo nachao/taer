@@ -5,7 +5,7 @@ import { Conditions, ICondition } from '../tools/condition';
 import { Middleware } from '../tools/middleware';
 import { IFieldTypes } from '../declare';
 import { IParamFieldMOption, IFieldProps, IFieldFitler } from './declare';
-import { FieldEvents, FieldMiddleware } from './consts';
+import { FieldEvents, FieldMiddleware, FieldPresetProperty } from './consts';
 
 export class TaerFields<T = any> {
 
@@ -113,57 +113,31 @@ export class TaerField<T = any> {
     private _event: Events<FieldEvents> = new Events;
     private _middleware: Middleware<FieldMiddleware> = new Middleware;
     private _condition: Conditions = new Conditions;
-
-    // 状态
-    private _store = new Map;
-    private _disabled: boolean;
-    private _show: boolean = true;
-    private _val: any;
-
-    // 基础数据
-    private _keyName = 'key';
-    private _label: string;
-    private _type: FieldType = FieldType.String;
-
-    public target: T;
+    private _store = new Map()
 
     constructor(
-        target?: T,
+        public target: T,
         private controller?: TaerFields,
     ) {
         this.target = target;
     }
 
+    // 初始化
     init(option?: IFieldProps) {
         if (option) {
             this.use(option);
             this.on(option);
         }
 
-        // 获取主键定义（仅在初始化执行一次）
-        // this.runKeyName();
-        // this.runType();
-        // this.runLabel();
-
-        // init middleware
-        // const field = this._middleware.run(FieldMiddleware.useDepends, { field: this });
-        // this.setDepends(field);
-
-        // init evet
-        // 此周期必须在所有定义执行完成后
         this.runInited();
     }
 
     // 中间件
     use(option: IFieldProps) {
-        // this._middleware.use(FieldMiddleware.useKeyName, option.useKeyName);
-        // this._middleware.use(FieldMiddleware.useLabel, option.useLabel);
         this._middleware.use(FieldMiddleware.useChange, option.useChange);
-        // this._middleware.use(FieldMiddleware.useDepends, option.useDepends);
         this._middleware.use(FieldMiddleware.useDisabled, option.useDisabled);
         this._middleware.use(FieldMiddleware.useShow, option.useShow);
         this._middleware.use(FieldMiddleware.useParam, option.useParam);
-        // this._middleware.use(FieldMiddleware.useType, option.useType);
     }
 
     // 监听
@@ -174,10 +148,11 @@ export class TaerField<T = any> {
         this._event.on(FieldEvents.onInited, option.onInited);
     }
 
-    // 常用类型 ====
+    // 常用属性 ====
 
-    get value() {
-        return this._val;
+    // 值操作
+    get value(): any {
+        return this.get(FieldPresetProperty.Value);
     }
     set value(value: any) {
         this.runChange(value);
@@ -189,44 +164,45 @@ export class TaerField<T = any> {
     }
 
     // 是否禁用
-    get disabled() {
-        return this._disabled;
+    get disabled(): boolean {
+        return this.get(FieldPresetProperty.Disabled);
     }
 
     // 是否展示
-    get show() {
-        return this._show;
+    get show(): boolean {
+        return this.get(FieldPresetProperty.Show)
     }
 
     // 字段主键
-    get key() {
-        if (has(this.target, this._keyName))
-            return this.target[this._keyName];
+    get key(): string {
+        const keyName: string = this.get(FieldPresetProperty.KeyName)
+        if (has(this.target, keyName)) return this.target[keyName];
         return Math.random().toString(32).slice(2);
     }
 
     // 字段名称
-    get label() {
-        return this._label;
+    get label(): string {
+        return this.get(FieldPresetProperty.Label);
     }
 
     // 字段类型
-    get type() {
-        return this._type;
+    get type(): FieldType {
+        return this.get(FieldPresetProperty.Type);
     }
 
     // 字段状态管理
-    set(key: any, value: any) {
+    set<T>(key: any, value: T) {
         this._store.set(key, value);
     }
-    get(key: any) {
-        this._store.get(key);
+    get<T>(key: any) {
+        const value = this._store.get(key);
+        return value as T;
     }
     del(key: any) {
         this._store.delete(key);
     }
 
-    // 解析条件规则
+    // 解析条件规则，需要特定格式见 ICondition
     parseCondition(rules: ICondition[][]): boolean {
         const data = this.controller.toJSON();
         const types = this.controller.toTypes();
@@ -259,18 +235,18 @@ export class TaerField<T = any> {
     }
 
     // 设置 字段主键
-    public setKeyName(key: string) {
-        this._keyName = key;
+    public setKeyName(value: string) {
+        this.set(FieldPresetProperty.KeyName, value);
     }
 
     // 设置 字段类型 
-    public setType(type: FieldType) {
-        this._type = type;
+    public setType(value: FieldType) {
+        this.set(FieldPresetProperty.Type, value);
     }
 
     // 设置 字段名词
-    public setLabel(label: string) {
-        this._label = label;
+    public setLabel(value: string) {
+        this.set(FieldPresetProperty.Label, value);
     }
 
     // ====
@@ -278,8 +254,10 @@ export class TaerField<T = any> {
     // 调用 赋值 中间件/回调
     private runChange(value: any) {
         const typeValue = parseValueOfType(value, this.type)
-        this._val = this._middleware.run(FieldMiddleware.useChange, { value: typeValue, field: this });
-        this._event.dispatch(FieldEvents.onChange, { field: this, value: this._val });
+        const newValue = this._middleware.run(FieldMiddleware.useChange, { value: typeValue, field: this });
+        this.set(FieldPresetProperty.Value, newValue);
+
+        this._event.dispatch(FieldEvents.onChange, { field: this, value: newValue });
         this.runDisabled();
         this.runShow();
     }
@@ -291,13 +269,13 @@ export class TaerField<T = any> {
 
     // 调用 禁用 中间件/回调
     private runDisabled(depend?: TaerField) {
-        this._disabled = this._middleware.run(FieldMiddleware.useDisabled, { value: false, field: this, depend });
+        this.set(FieldPresetProperty.Disabled, this._middleware.run(FieldMiddleware.useDisabled, { value: false, field: this, depend }));
         this._event.dispatch(FieldEvents.onDisabled, { field: this });
     }
 
     // 调用 是否展示 中间件/回调
     private runShow(depend?: TaerField) {
-        this._show = this._middleware.run(FieldMiddleware.useShow, { value: false, field: this, depend });
+        this.set(FieldPresetProperty.Show, this._middleware.run(FieldMiddleware.useShow, { value: false, field: this, depend }));
         this._event.dispatch(FieldEvents.onShow, { field: this });
     }
 

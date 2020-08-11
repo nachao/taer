@@ -3,13 +3,12 @@ import { IFieldTypes } from '../declare';
 
 // 前置条件
 export enum ConditionMode {
-    Equal = 'equal to',
-    NotEqual = 'not equal to',
+    Equal = 'Equal',
+    NotEqual = 'NotEqual',
+    LessThen = 'LessThen',
+    GreaterThen = 'GreaterThen',
+    Include = 'Include',
 }
-
-// 参数类型
-export type ConditionType = { [key: string]: FieldType }
-
 
 // 字段展示前置条件
 export interface ICondition {
@@ -21,7 +20,7 @@ export interface ICondition {
     value?: any;
 
     // 匹配方式
-    // 默认未 Eq
+    // 默认未 Equal
     mode?: ConditionMode;
 }
 
@@ -30,20 +29,15 @@ export interface ICondition {
 export class Conditions {
 
     // 解析指定字段
+    // conditions 第一层数组为 或，第二层数据为 且
     parse(data: any, conditions: ICondition[][], types: IFieldTypes = {}): boolean {
         if (!data) return true;
         if (!conditions || conditions.length == 0) return true;
-
-        // 解析
-        const conditionOr = conditions.map(cAnd => cAnd.every(c => this.parseCondition(data, c, types)));
-        const result = conditionOr.some(is => !!is);
-
-        return result;
+        return conditions.map(cAnd => cAnd.every(c => this.parseCondition(data, c, types))).some(is => !!is);
     }
 
-    // 根据前置条件，解析是否展示
-    // 没有则默认为展示
-    private parseCondition(data: any, condition: ICondition, types: IFieldTypes) {
+    // 解析单个条件
+    parseCondition(data: any, condition: ICondition, types: IFieldTypes = {}) {
         const type = types[condition.key];
         const received = data[condition.key];
         const expected = condition.value;
@@ -53,26 +47,26 @@ export class Conditions {
                 return this.parseConditionEqual(received, expected, type);
             case ConditionMode.NotEqual:
                 return this.parseConditionNotEqual(received, expected, type);
+            case ConditionMode.GreaterThen:
+                return received > expected;
+            case ConditionMode.LessThen:
+                return received < expected;
+            case ConditionMode.Include:
+                return received?.includes(expected);
             default:
                 return this.parseConditionEqual(received, expected, type);
         }
     }
 
-    /**
-     * 匹配相等
-     */
+    // 匹配相等
     private parseConditionEqual(received: any, expected: any, type: FieldType) {
-        if (type === FieldType.Boolean)
-            return !!received === !!expected;
+        if (type === FieldType.Boolean) return !!received === !!expected;
         return (received || '') == (expected || '');
     }
 
-    /**
-     * 匹配不等
-     */
+    // 匹配不等
     private parseConditionNotEqual(received: any, expected: any, type: FieldType) {
-        if (type === FieldType.Boolean)
-            return !!received !== !!expected;
+        if (type === FieldType.Boolean) return !!received !== !!expected;
         return (received || '') != (expected || '');
     }
 }

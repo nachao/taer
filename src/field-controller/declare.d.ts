@@ -28,20 +28,8 @@ export interface IParamFieldMOption extends IFieldMiddlewareOption {
 // 单个字段中间件，用于设置值使用
 export interface ITaerFieldMiddleware {
 
-    // 定义字段唯一主键
-    // useKeyName?: IFunc<IFieldMOption, string>;
-
-    // 定义字段名称
-    // useLabel?: IFunc<IFieldMOption, string>;
-
-    // 定义字段类型
-    // useType?: IFunc<IFieldMOption, FieldType>;
-
     // 定义字段修改的值
     useChange?: IFunc<IFieldMiddlewareOption>;
-
-    // 定义依赖字段（改成 field.setDepends() 方法）
-    // useDepends?: IFunc<IFieldMOption, TaerField[]>;
 
     // 当 onChange 和 onDepends 被触发后都会触发此中间件
     useDisabled?: IFunc<IFieldMiddlewareOption, boolean>;

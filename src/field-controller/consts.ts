@@ -1,17 +1,11 @@
 
 // 字段中间件
 export enum FieldMiddleware {
-    // useKeyName = 'useKeyName',
-    // useLabel = 'useLabel',
-    // useType = 'useType',
     useInited = 'useInited',
-    // useFieldInited = 'useFieldInited',
     useChange = 'useChange',
-    // useDisplay = 'useDisplay',
     useDisabled = 'useDisabled',
     useShow = 'useShow',
     useVerify = 'useVerify',
-    // useDepends = 'useDepends',
     useParam = 'useParam',
 }
 
@@ -22,4 +16,14 @@ export enum FieldEvents {
     onDisabled = 'onDisabled',
     onShow = 'onShow',
     onDepend = 'onDepends',
+}
+
+// 字段预置属性
+export enum FieldPresetProperty {
+    Disabled,
+    KeyName,
+    Value,
+    Show,
+    Label,
+    Type,
 }
