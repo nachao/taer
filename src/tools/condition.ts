@@ -1,5 +1,3 @@
-import { FieldType } from '../consts';
-import { IFieldTypes } from '../declare';
 
 // 前置条件
 export enum ConditionMode {
@@ -26,19 +24,19 @@ export interface ICondition {
 
 
 // 前置条件
-export class Conditions {
+export class Conditions<T = any> {
 
     // 解析指定字段
     // conditions 第一层数组为 或，第二层数据为 且
-    parse(data: any, conditions: ICondition[][], types: IFieldTypes = {}): boolean {
+    parse(data: any, conditions: ICondition[][], types?: T): boolean {
         if (!data) return true;
         if (!conditions || conditions.length == 0) return true;
         return conditions.map(cAnd => cAnd.every(c => this.parseCondition(data, c, types))).some(is => !!is);
     }
 
     // 解析单个条件
-    parseCondition(data: any, condition: ICondition, types: IFieldTypes = {}) {
-        const type = types[condition.key];
+    parseCondition(data: any, condition: ICondition, types?: T) {
+        const type = types ? types[condition.key] : null;
         const received = data[condition.key];
         const expected = condition.value;
 
@@ -59,14 +57,14 @@ export class Conditions {
     }
 
     // 匹配相等
-    private parseConditionEqual(received: any, expected: any, type: FieldType) {
-        if (type === FieldType.Boolean) return !!received === !!expected;
+    private parseConditionEqual(received: any, expected: any, type?: any) {
+        // if (type === Type.Boolean) return !!received === !!expected;
         return (received || '') == (expected || '');
     }
 
     // 匹配不等
-    private parseConditionNotEqual(received: any, expected: any, type: FieldType) {
-        if (type === FieldType.Boolean) return !!received !== !!expected;
+    private parseConditionNotEqual(received: any, expected: any, type?: any) {
+        // if (type === Type.Boolean) return !!received !== !!expected;
         return (received || '') != (expected || '');
     }
 }

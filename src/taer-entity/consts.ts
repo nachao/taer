@@ -1,6 +1,15 @@
 
+// 字段类型
+export enum EntityType {
+    String = 'EntityTypeString',
+    Boolean = 'EntityTypeBoolean',
+    Number = 'EntityTypeNumber',
+    List = 'EntityTypeList',
+    Date = 'EntityTypeDate',
+}
+
 // 字段中间件
-export enum FieldMiddleware {
+export enum EntityMiddleware {
     useInited = 'useInited',
     useChange = 'useChange',
     useDisabled = 'useDisabled',
@@ -10,7 +19,7 @@ export enum FieldMiddleware {
 }
 
 // 字段回调
-export enum FieldEvents {
+export enum EntityEvents {
     onInited = 'onInited',
     onChange = 'onChange',
     onDisabled = 'onDisabled',
@@ -19,7 +28,7 @@ export enum FieldEvents {
 }
 
 // 字段预置属性
-export enum FieldPresetProperty {
+export enum EntityPresetProperty {
     Disabled,
     KeyName,
     Value,

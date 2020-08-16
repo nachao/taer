@@ -3,6 +3,10 @@
     "version": "1.0.9",
     "license": "MIT",
     "main": "lib/index.js",
-    "keywords": ["frondend", "metadata", "model"],
+    "keywords": [
+        "frondend",
+        "metadata",
+        "model"
+    ],
     "repository": "https://github.com/nachao/taer"
 }
